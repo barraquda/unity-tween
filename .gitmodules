@@ -1,0 +1,3 @@
+[submodule "Easing"]
+	path = Easing
+	url = https://github.com/barraquda/easing.git
