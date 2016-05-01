@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections.Generic;
-using Barracuda;
 using UnityEngine.UI;
+
+using Barracuda;
 
 namespace Barracuda.UISystem
 {

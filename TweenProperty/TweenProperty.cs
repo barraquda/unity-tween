@@ -7,7 +7,9 @@ using UnityEngine.UI;
 
 namespace Barracuda.UISystem
 {
-
+	/// <summary>
+	/// Tween Target
+	/// </summary>
 	public abstract class TweenProperty
 	{
 		public PropKey Key { get; private set; }
@@ -20,6 +22,11 @@ namespace Barracuda.UISystem
 			this.Value = val;
 		}
 
+		/// <summary>
+		/// Get Action that influence target UI
+		/// </summary>
+		/// <returns>The tweener.</returns>
+		/// <param name="ui">User interface.</param>
 		public abstract Action<float> GetTweener(Graphic ui);
 
 		private Action<float> empty;
