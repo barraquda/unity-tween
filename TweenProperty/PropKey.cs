@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Barracuda.UISystem
 {
-
+	
 	public enum PropKey
 	{
 		Scale,
