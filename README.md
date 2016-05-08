@@ -47,7 +47,7 @@ public class Tester : MonoBehaviour
 
 Or, if you want to controll more automatically,
 
-```
+```cs
 public class Tester : MonoBehaviour
 {
 	[SerializeField] private Image image1;
