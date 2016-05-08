@@ -11,7 +11,7 @@ namespace Barracuda.UISystem
 
 	public class Multiple : TweenProperty
 	{
-		public Multiple(PropKey key, float val) : base(key, val)
+		public Multiple(TweenKey key, float val) : base(key, val)
 		{
 		}
 

@@ -11,14 +11,14 @@ namespace Barracuda.UISystem
 
 	public class Absolute : TweenProperty
 	{
-		public Absolute(PropKey key, float val) : base(key, val)
+		public Absolute(TweenKey key, float val) : base(key, val)
 		{
 		}
 
 		public override Action<float> GetTweener(Graphic ui)
 		{
 			switch (Key) {
-			case PropKey.Width:
+			case TweenKey.Width:
 				{
 					var prevWidth = ui.rectTransform.sizeDelta.x;
 					var diff = Value - prevWidth;
@@ -26,7 +26,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.sizeDelta = new Vector2(prevWidth + diff * degree, ui.rectTransform.sizeDelta.y);
 					};
 				}
-			case PropKey.X:
+			case TweenKey.X:
 				{
 					var prevX = ui.rectTransform.anchoredPosition.x;
 					var diffX = Value - prevX;
@@ -34,7 +34,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.anchoredPosition = new Vector2(prevX + diffX * degree, ui.rectTransform.anchoredPosition.y);
 					};
 				}
-			case PropKey.Y:
+			case TweenKey.Y:
 				{
 					var prevY = ui.rectTransform.anchoredPosition.y;
 					var diffY = Value - prevY;
@@ -42,7 +42,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.anchoredPosition = new Vector2(ui.rectTransform.anchoredPosition.x, prevY + diffY * degree);
 					};
 				}
-			case PropKey.GlobalX:
+			case TweenKey.GlobalX:
 				{
 					var prevX = ui.rectTransform.position.x;
 					var diffX = Value - prevX;
@@ -50,7 +50,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.position = new Vector2(prevX + diffX * degree, ui.rectTransform.position.y);
 					};
 				}
-			case PropKey.GlobalY:
+			case TweenKey.GlobalY:
 				{
 					var prevY = ui.rectTransform.position.y;
 					var diffY = Value - prevY;
@@ -58,7 +58,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.position = new Vector2(ui.rectTransform.position.x, prevY + diffY * degree);
 					};
 				}
-			case PropKey.RotationZ:
+			case TweenKey.RotationZ:
 				{
 					var rotationZ = Value;
 					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
@@ -68,7 +68,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.localRotation = Quaternion.Euler(v);
 					};
 				}
-			case PropKey.RotationY:
+			case TweenKey.RotationY:
 				{
 					var rotationY = Value;
 					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
@@ -78,7 +78,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.localRotation = Quaternion.Euler(v);
 					};
 				}
-			case PropKey.RotationX:
+			case TweenKey.RotationX:
 				{
 					var rotationX = Value;
 					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
@@ -88,7 +88,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.localRotation = Quaternion.Euler(v);
 					};
 				}
-			case PropKey.Scale:
+			case TweenKey.Scale:
 				{
 					var prevScale = ui.rectTransform.localScale;
 					var diffScale = new Vector3(1, 1, 1) * Value - prevScale;
@@ -96,7 +96,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.localScale = prevScale + diffScale * degree;
 					};
 				}
-			case PropKey.ScaleX:
+			case TweenKey.ScaleX:
 				{
 					var prevScaleX = ui.rectTransform.localScale.x;
 					var diffScaleX = Value - prevScaleX;
@@ -104,7 +104,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.localScale = new Vector3(prevScaleX + diffScaleX * degree, ui.rectTransform.localScale.y, ui.rectTransform.localScale.z);
 					};
 				}
-			case PropKey.ScaleY:
+			case TweenKey.ScaleY:
 				{
 					var prevScaleY = ui.rectTransform.localScale.y;
 					var diffScaleY = Value - prevScaleY;
@@ -112,7 +112,7 @@ namespace Barracuda.UISystem
 						ui.rectTransform.localScale = new Vector3(ui.rectTransform.localScale.x, prevScaleY + diffScaleY * degree, ui.rectTransform.localScale.z);
 					};
 				}
-			case PropKey.Brightness:
+			case TweenKey.Brightness:
 				{
 					var bright = ui.color.grayscale;
 					var diff = Value - bright;
@@ -121,13 +121,13 @@ namespace Barracuda.UISystem
 						ui.color = new Color(d, d, d, ui.color.a);
 					};
 				}
-			case PropKey.Opacity:
+			case TweenKey.Opacity:
 				{
 					var prevOpacity = ui.color.a;
 					var diff = Value - prevOpacity;
 					return degree => ui.color = new Color(ui.color.r, ui.color.g, ui.color.b, diff * degree);
 				}
-			case PropKey.CanvasGroupAlpha:
+			case TweenKey.CanvasGroupAlpha:
 				{
 					var cg = ui.GetComponent<CanvasGroup>();
 					if (cg == null) {
@@ -138,7 +138,7 @@ namespace Barracuda.UISystem
 					var diff = Value - prev;
 					return degree => cg.alpha = prev + diff * degree;
 				}
-			case PropKey.Alpha:
+			case TweenKey.Alpha:
 				{
 					var cr = ui.GetComponent<CanvasRenderer>();
 					var prev = cr.GetAlpha();

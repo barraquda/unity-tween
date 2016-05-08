@@ -11,7 +11,7 @@ namespace Barracuda.UISystem
 
 	public class Relative : TweenProperty
 	{
-		public Relative(PropKey key, float val) : base(key, val)
+		public Relative(TweenKey key, float val) : base(key, val)
 		{
 		}
 

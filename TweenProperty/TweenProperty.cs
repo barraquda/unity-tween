@@ -12,11 +12,11 @@ namespace Barracuda.UISystem
 	/// </summary>
 	public abstract class TweenProperty
 	{
-		public PropKey Key { get; private set; }
+		public TweenKey Key { get; private set; }
 
 		public float Value { get; private set; }
 
-		protected TweenProperty(PropKey key, float val)
+		protected TweenProperty(TweenKey key, float val)
 		{
 			this.Key = key;
 			this.Value = val;
