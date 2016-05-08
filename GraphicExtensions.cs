@@ -45,7 +45,7 @@ namespace Barracuda.UISystem
 			}
 
 			float elapsedTime = 0;
-			while ((elapsedTime = Time.time - startTime) < duration) {
+			while ((elapsedTime += Time.deltaTime) < duration) {
 				var degree = elapsedTime / duration;
 				foreach (var tweener in tweeners) {
 					tweener.Invoke(degree);
