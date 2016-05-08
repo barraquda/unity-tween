@@ -17,37 +17,35 @@ namespace Barracuda.UISystem
 
 		public override Action<float> GetTweener(Graphic ui)
 		{
-			/*
-			switch (prop.Key) {
-			case PropKey.X:
+			switch (Key) {
+			case TweenKey.X:
 				{
-					var prev = ui.anchoredPosition.x;
-					var diff = prop.Value;
+					var prev = ui.rectTransform.anchoredPosition.x;
+					var diff = Value;
 					return degree => {
-						ui.anchoredPosition = new Vector2(prev + diff * degree, ui.anchoredPosition.y);
+						ui.rectTransform.anchoredPosition = new Vector2(prev + diff * degree, ui.rectTransform.anchoredPosition.y);
 					};
 				}
-			case PropKey.Y:
+			case TweenKey.Y:
 				{
-					var prev = ui.anchoredPosition.y;
-					var diff = prop.Value;
+					var prev = ui.rectTransform.anchoredPosition.y;
+					var diff = Value;
 					return degree => {
-						ui.anchoredPosition = new Vector2(ui.anchoredPosition.x, prev + diff * degree);
+						ui.rectTransform.anchoredPosition = new Vector2(ui.rectTransform.anchoredPosition.x, prev + diff * degree);
 					};
 				}
-			case PropKey.RotationZ:
+			case TweenKey.RotationZ:
 				{
-					var r = prop.Value;
-					var prevRotation = ui.localRotation.eulerAngles;
+					var r = Value;
+					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
 					return degree => {
-						ui.localRotation = Quaternion.Euler(new Vector3(
-							ui.localRotation.x,
-							ui.localRotation.y,
+						ui.rectTransform.localRotation = Quaternion.Euler(new Vector3(
+							ui.rectTransform.localRotation.x,
+							ui.rectTransform.localRotation.y,
 							prevRotation.z + r * degree));
 					};
 				}
 			}
-			*/
 
 			Debug.LogWarningFormat("PropKey `{0}` to `Relative` is not catched", Key);
 			return Empty;

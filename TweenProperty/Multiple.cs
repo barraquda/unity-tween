@@ -17,34 +17,33 @@ namespace Barracuda.UISystem
 
 		public override Action<float> GetTweener(Graphic ui)
 		{
-			/*
-			switch (prop.Key) {
-			case PropKey.Scale:
+			switch (Key) {
+			case TweenKey.Scale:
 				{
-					var prevScale = ui.localScale;
-					var diffScale = prop.Value * ui.localScale - prevScale;
+					var prevScale = ui.transform.localScale;
+					var diffScale = Value * ui.transform.localScale - prevScale;
 					return degree => {
-						ui.localScale = prevScale + diffScale * degree;
+						ui.transform.localScale = prevScale + diffScale * degree;
 					};
 				}
-			case PropKey.ScaleX:
+			case TweenKey.ScaleX:
 				{
-					var prevScaleX = ui.localScale.x;
-					var diffScaleX = prop.Value * ui.localScale.x - prevScaleX;
+					var prevScaleX = ui.transform.localScale.x;
+					var diffScaleX = Value * ui.transform.localScale.x - prevScaleX;
 					return degree => {
-						ui.localScale = new Vector2(prevScaleX + diffScaleX * degree, ui.localScale.y);
+						ui.transform.localScale = new Vector2(prevScaleX + diffScaleX * degree, ui.transform.localScale.y);
 					};
 				}
-			case PropKey.ScaleY:
+			case TweenKey.ScaleY:
 				{
-					var prevScaleY = ui.localScale.y;
-					var diffScaleY = prop.Value * ui.localScale.y - prevScaleY;
+					var prevScaleY = ui.transform.localScale.y;
+					var diffScaleY = Value * ui.transform.localScale.y - prevScaleY;
 					return degree => {
-						ui.localScale = new Vector2(ui.localScale.x, prevScaleY + diffScaleY * degree);
+						ui.transform.localScale = new Vector2(ui.transform.localScale.x, prevScaleY + diffScaleY * degree);
 					};
 				}
 			}
-			*/
+
 			Debug.LogWarningFormat("PropKey `{0}` to `Multiple` is not catched", Key);
 			return Empty;
 		}
