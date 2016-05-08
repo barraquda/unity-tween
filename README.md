@@ -1,54 +1,44 @@
 # Unity Tween System
 
-All function return `IEnumerable<ITween>`.
-If you can use Linq or UniLinq (C# Linq implementation in Unity), let's opperate like below!  
-The following script will execute 2 tweens subsequently.
+All function return `IEnumerable<IStreamee<Unit>>`.  
+(`IStreamee<T>` is our framework using IEnumerable<T>. The detail is not discribed here)
+
+
+## Usage
 
 ```cs
+using Barracuda.UISystem;
+using Barracuda;
+
 public class Tester : MonoBehaviour
 {
-    [SerializeField] Image image1;
-    [SerializeField] Image image2;
+	[SerializeField] private Image image1;
+	[SerializeField] private Image image2;
+	[SerializeField] private Text text;
 
-    void Start()
-    {
-        ITween tween1 = image1.Animate(/* TODO */);
-        ITween tween2 = image2.Animate(/* TODO */);
+	Streamer<Unit> streamer;
 
-        IEnumerable<ITween> concatenated = tween1.Concat(tween2);
+	void Start ()
+	{
+		streamer = new Streamer<Unit>(AnimateSubsequently().ToStreamee());
+	}
 
-        concatenated.Run();
-    }
-}
-```
+	void Update ()
+	{
+		streamer.Feed();
+	}
 
-```cs
-void Start()
-{
-    IEnumerable<ITween> tween1 = image1.Animate(/* TODO */);
-    IEnumerable<ITween> tween2 = image2.Animate(/* TODO */);
+	private IEnumerable<IStreamee<Unit>> AnimateSubsequently()
+	{
+		yield return image1.Animate(new Absolute(PropKey.X, 0), 2f);
+		yield return image1.Animate(new Absolute(PropKey.Y, 0), 1f);
 
-    ITween merged = tween1.Merge(tween2);
+		yield return Streamee.Wait(TimeSpan.FromSeconds(2f));
 
-    merged.Run();
-}
-```
-
-```cs
-void Start()
-{
-    IEnumerable<ITween> tween = GetTween(image1);
-    tween.Run();
-}
-
-IEnumerable<ITween> GetTween(Graphic image)
-{
-    yield return image.Animate(/* TODO */);
-
-    image.sprite = Resources.Load<Sprite>("...");
-
-    yield return image.Animate(/* TODO */);
-
-    yield return image.Animate(/* TODO */);
+		yield return Streamee.MergeToUnit(
+			image1.Animate(new Absolute(PropKey.Alpha, 0), 2f),
+			image2.Animate(new Absolute(PropKey.Alpha, 0), 2f)
+		);
+	}
 }
 ```
