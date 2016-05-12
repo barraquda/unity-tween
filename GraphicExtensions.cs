@@ -37,7 +37,6 @@ namespace Barracuda.UISystem
 
 		private static IEnumerable<IStreamee<Unit>> AnimateEnumerable(Graphic ui, TweenProperty[] properties, float duration, EasingMode easingMode)
 		{
-			var startTime = Time.time;
 			var tweeners = new Action<float>[properties.Length];
 
 			for (var i = 0; i < tweeners.Length; i++) {
