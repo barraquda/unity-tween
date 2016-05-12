@@ -12,14 +12,14 @@ namespace Barracuda.UISystem
 	/// </summary>
 	public static class GraphicExtensions
 	{
-		public static void Fix(this Graphic ui, params TweenProperty[] parameters)
+		public static void Fix(this GameObject ui, params TweenProperty[] parameters)
 		{
 			foreach (TweenProperty prop in parameters) {
 				prop.GetTweener(ui)(1.0f);
 			}
 		}
 
-		public static IStreamee<Unit> Animate(this Graphic ui, TweenProperty[] properties, float duration, EasingMode easingMode = null)
+		public static IStreamee<Unit> Animate(this GameObject ui, TweenProperty[] properties, float duration, EasingMode easingMode = null)
 		{
 			if (ui == null) {
 				throw new NullReferenceException("Null is invalid");
@@ -30,12 +30,12 @@ namespace Barracuda.UISystem
 			return Streamee.Branch(AnimateEnumerable(ui, properties, duration, easingMode));
 		}
 
-		public static IStreamee<Unit> Animate(this Graphic ui, TweenProperty property, float duration, EasingMode easingMode = null)
+		public static IStreamee<Unit> Animate(this GameObject ui, TweenProperty property, float duration, EasingMode easingMode = null)
 		{
 			return Animate(ui, new TweenProperty[] { property }, duration, easingMode);
 		}
 
-		private static IEnumerable<IStreamee<Unit>> AnimateEnumerable(Graphic ui, TweenProperty[] properties, float duration, EasingMode easingMode)
+		private static IEnumerable<IStreamee<Unit>> AnimateEnumerable(GameObject ui, TweenProperty[] properties, float duration, EasingMode easingMode)
 		{
 			var tweeners = new Action<float>[properties.Length];
 

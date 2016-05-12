@@ -15,31 +15,36 @@ namespace Barracuda.UISystem
 		{
 		}
 
-		public override Action<float> GetTweener(Graphic ui)
+		public override Action<float> GetTweener(GameObject gameObject)
 		{
+			var rectTransform = gameObject.GetComponent<RectTransform>();
+			if (rectTransform == null) {
+				Debug.LogWarningFormat("{0} is not UI object", gameObject.name);
+				return Empty;
+			}
 			switch (Key) {
 			case TweenKey.Scale:
 				{
-					var prevScale = ui.transform.localScale;
-					var diffScale = Value * ui.transform.localScale - prevScale;
+					var prevScale = rectTransform.localScale;
+					var diffScale = Value * rectTransform.localScale - prevScale;
 					return degree => {
-						ui.transform.localScale = prevScale + diffScale * degree;
+						rectTransform.localScale = prevScale + diffScale * degree;
 					};
 				}
 			case TweenKey.ScaleX:
 				{
-					var prevScaleX = ui.transform.localScale.x;
-					var diffScaleX = Value * ui.transform.localScale.x - prevScaleX;
+					var prevScaleX = rectTransform.localScale.x;
+					var diffScaleX = Value * rectTransform.localScale.x - prevScaleX;
 					return degree => {
-						ui.transform.localScale = new Vector2(prevScaleX + diffScaleX * degree, ui.transform.localScale.y);
+						rectTransform.localScale = new Vector2(prevScaleX + diffScaleX * degree, rectTransform.localScale.y);
 					};
 				}
 			case TweenKey.ScaleY:
 				{
-					var prevScaleY = ui.transform.localScale.y;
-					var diffScaleY = Value * ui.transform.localScale.y - prevScaleY;
+					var prevScaleY = rectTransform.localScale.y;
+					var diffScaleY = Value * rectTransform.localScale.y - prevScaleY;
 					return degree => {
-						ui.transform.localScale = new Vector2(ui.transform.localScale.x, prevScaleY + diffScaleY * degree);
+						rectTransform.localScale = new Vector2(rectTransform.localScale.x, prevScaleY + diffScaleY * degree);
 					};
 				}
 			}

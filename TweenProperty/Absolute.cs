@@ -15,105 +15,111 @@ namespace Barracuda.UISystem
 		{
 		}
 
-		public override Action<float> GetTweener(Graphic ui)
+		public override Action<float> GetTweener(GameObject gameObject)
 		{
+			var rectTransform = gameObject.GetComponent<RectTransform>();
+			if (rectTransform == null) {
+				Debug.LogWarningFormat("{0} is not UI object", gameObject.name);
+				return Empty;
+			}
 			switch (Key) {
 			case TweenKey.Width:
 				{
-					var prevWidth = ui.rectTransform.sizeDelta.x;
+					var prevWidth = rectTransform.sizeDelta.x;
 					var diff = Value - prevWidth;
 					return degree => {
-						ui.rectTransform.sizeDelta = new Vector2(prevWidth + diff * degree, ui.rectTransform.sizeDelta.y);
+						rectTransform.sizeDelta = new Vector2(prevWidth + diff * degree, rectTransform.sizeDelta.y);
 					};
 				}
 			case TweenKey.X:
 				{
-					var prevX = ui.rectTransform.anchoredPosition.x;
+					var prevX = rectTransform.anchoredPosition.x;
 					var diffX = Value - prevX;
 					return degree => {
-						ui.rectTransform.anchoredPosition = new Vector2(prevX + diffX * degree, ui.rectTransform.anchoredPosition.y);
+						rectTransform.anchoredPosition = new Vector2(prevX + diffX * degree, rectTransform.anchoredPosition.y);
 					};
 				}
 			case TweenKey.Y:
 				{
-					var prevY = ui.rectTransform.anchoredPosition.y;
+					var prevY = rectTransform.anchoredPosition.y;
 					var diffY = Value - prevY;
 					return degree => {
-						ui.rectTransform.anchoredPosition = new Vector2(ui.rectTransform.anchoredPosition.x, prevY + diffY * degree);
+						rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, prevY + diffY * degree);
 					};
 				}
 			case TweenKey.GlobalX:
 				{
-					var prevX = ui.rectTransform.position.x;
+					var prevX = rectTransform.position.x;
 					var diffX = Value - prevX;
 					return degree => {
-						ui.rectTransform.position = new Vector2(prevX + diffX * degree, ui.rectTransform.position.y);
+						rectTransform.position = new Vector2(prevX + diffX * degree, rectTransform.position.y);
 					};
 				}
 			case TweenKey.GlobalY:
 				{
-					var prevY = ui.rectTransform.position.y;
+					var prevY = rectTransform.position.y;
 					var diffY = Value - prevY;
 					return degree => {
-						ui.rectTransform.position = new Vector2(ui.rectTransform.position.x, prevY + diffY * degree);
+						rectTransform.position = new Vector2(rectTransform.position.x, prevY + diffY * degree);
 					};
 				}
 			case TweenKey.RotationZ:
 				{
 					var rotationZ = Value;
-					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
+					var prevRotation = rectTransform.localRotation.eulerAngles;
 					var diff = (rotationZ - prevRotation.z) % 360;
 					return degree => {
 						var v = new Vector3(prevRotation.x, prevRotation.y, prevRotation.z + diff * degree);
-						ui.rectTransform.localRotation = Quaternion.Euler(v);
+						rectTransform.localRotation = Quaternion.Euler(v);
 					};
 				}
 			case TweenKey.RotationY:
 				{
 					var rotationY = Value;
-					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
+					var prevRotation = rectTransform.localRotation.eulerAngles;
 					var diff = (rotationY - prevRotation.y) % 360;
 					return degree => {
 						var v = new Vector3(prevRotation.x, prevRotation.y + diff * degree, prevRotation.y);
-						ui.rectTransform.localRotation = Quaternion.Euler(v);
+						rectTransform.localRotation = Quaternion.Euler(v);
 					};
 				}
 			case TweenKey.RotationX:
 				{
 					var rotationX = Value;
-					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
+					var prevRotation = rectTransform.localRotation.eulerAngles;
 					var diff = (rotationX - prevRotation.x) % 360;
 					return degree => {
 						var v = new Vector3(prevRotation.x + diff * degree, prevRotation.y, prevRotation.z);
-						ui.rectTransform.localRotation = Quaternion.Euler(v);
+						rectTransform.localRotation = Quaternion.Euler(v);
 					};
 				}
 			case TweenKey.Scale:
 				{
-					var prevScale = ui.rectTransform.localScale;
+					var prevScale = rectTransform.localScale;
 					var diffScale = new Vector3(1, 1, 1) * Value - prevScale;
 					return degree => {
-						ui.rectTransform.localScale = prevScale + diffScale * degree;
+						rectTransform.localScale = prevScale + diffScale * degree;
 					};
 				}
 			case TweenKey.ScaleX:
 				{
-					var prevScaleX = ui.rectTransform.localScale.x;
+					var prevScaleX = rectTransform.localScale.x;
 					var diffScaleX = Value - prevScaleX;
 					return degree => {
-						ui.rectTransform.localScale = new Vector3(prevScaleX + diffScaleX * degree, ui.rectTransform.localScale.y, ui.rectTransform.localScale.z);
+						rectTransform.localScale = new Vector3(prevScaleX + diffScaleX * degree, rectTransform.localScale.y, rectTransform.localScale.z);
 					};
 				}
 			case TweenKey.ScaleY:
 				{
-					var prevScaleY = ui.rectTransform.localScale.y;
+					var prevScaleY = rectTransform.localScale.y;
 					var diffScaleY = Value - prevScaleY;
 					return degree => {
-						ui.rectTransform.localScale = new Vector3(ui.rectTransform.localScale.x, prevScaleY + diffScaleY * degree, ui.rectTransform.localScale.z);
+						rectTransform.localScale = new Vector3(rectTransform.localScale.x, prevScaleY + diffScaleY * degree, rectTransform.localScale.z);
 					};
 				}
 			case TweenKey.Brightness:
 				{
+					var ui = gameObject.GetComponent<Graphic>();
 					var bright = ui.color.grayscale;
 					var diff = Value - bright;
 					return degree => {
@@ -123,15 +129,16 @@ namespace Barracuda.UISystem
 				}
 			case TweenKey.Opacity:
 				{
+					var ui = gameObject.GetComponent<Graphic>();
 					var prevOpacity = ui.color.a;
 					var diff = Value - prevOpacity;
 					return degree => ui.color = new Color(ui.color.r, ui.color.g, ui.color.b, diff * degree);
 				}
 			case TweenKey.CanvasGroupAlpha:
 				{
-					var cg = ui.GetComponent<CanvasGroup>();
+					var cg = gameObject.GetComponent<CanvasGroup>();
 					if (cg == null) {
-						Debug.LogWarningFormat("`{0}` is not attached CanvasGroup component", ui);
+						Debug.LogWarningFormat("`{0}` is not attached CanvasGroup component", gameObject);
 						return Empty;
 					}
 					var prev = cg.alpha;
@@ -140,7 +147,11 @@ namespace Barracuda.UISystem
 				}
 			case TweenKey.Alpha:
 				{
-					var cr = ui.GetComponent<CanvasRenderer>();
+					var cr = gameObject.GetComponent<CanvasRenderer>();
+					if (cr == null) {
+						Debug.LogWarningFormat("`{0}` is not attached CanvasRenderer component", gameObject);
+						return Empty;
+					}
 					var prev = cr.GetAlpha();
 					var diff = Value - prev;
 					return degree => cr.SetAlpha(prev + diff * degree);

@@ -15,33 +15,38 @@ namespace Barracuda.UISystem
 		{
 		}
 
-		public override Action<float> GetTweener(Graphic ui)
+		public override Action<float> GetTweener(GameObject gameObject)
 		{
+			var rectTransform = gameObject.GetComponent<RectTransform>();
+			if (rectTransform == null) {
+				Debug.LogWarningFormat("{0} is not UI object", gameObject.name);
+				return Empty;
+			}
 			switch (Key) {
 			case TweenKey.X:
 				{
-					var prev = ui.rectTransform.anchoredPosition.x;
+					var prev = rectTransform.anchoredPosition.x;
 					var diff = Value;
 					return degree => {
-						ui.rectTransform.anchoredPosition = new Vector2(prev + diff * degree, ui.rectTransform.anchoredPosition.y);
+						rectTransform.anchoredPosition = new Vector2(prev + diff * degree, rectTransform.anchoredPosition.y);
 					};
 				}
 			case TweenKey.Y:
 				{
-					var prev = ui.rectTransform.anchoredPosition.y;
+					var prev = rectTransform.anchoredPosition.y;
 					var diff = Value;
 					return degree => {
-						ui.rectTransform.anchoredPosition = new Vector2(ui.rectTransform.anchoredPosition.x, prev + diff * degree);
+						rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, prev + diff * degree);
 					};
 				}
 			case TweenKey.RotationZ:
 				{
 					var r = Value;
-					var prevRotation = ui.rectTransform.localRotation.eulerAngles;
+					var prevRotation = rectTransform.localRotation.eulerAngles;
 					return degree => {
-						ui.rectTransform.localRotation = Quaternion.Euler(new Vector3(
-							ui.rectTransform.localRotation.x,
-							ui.rectTransform.localRotation.y,
+						rectTransform.localRotation = Quaternion.Euler(new Vector3(
+							rectTransform.localRotation.x,
+							rectTransform.localRotation.y,
 							prevRotation.z + r * degree));
 					};
 				}

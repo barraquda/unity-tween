@@ -27,7 +27,7 @@ namespace Barracuda.UISystem
 		/// </summary>
 		/// <returns>The tweener.</returns>
 		/// <param name="ui">User interface.</param>
-		public abstract Action<float> GetTweener(Graphic ui);
+		public abstract Action<float> GetTweener(GameObject gameObject);
 
 		private Action<float> empty;
 		protected Action<float> Empty {
