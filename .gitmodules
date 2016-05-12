@@ -1,6 +1,0 @@
-[submodule "Easing"]
-	path = Easing
-	url = https://github.com/barraquda/easing.git
-[submodule "Streamee"]
-	path = Streamee
-	url = https://github.com/barraquda/streamee.git
