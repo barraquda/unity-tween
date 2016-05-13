@@ -50,6 +50,17 @@ namespace Barracuda.UISystem
 							prevRotation.z + r * degree));
 					};
 				}
+			case TweenKey.CanvasGroupAlpha:
+				{
+					var cg = gameObject.GetComponent<CanvasGroup>();
+					if (cg == null) {
+						Debug.LogWarningFormat("`{0}` is not attached CanvasGroup component", gameObject);
+						return Empty;
+					}
+					var prev = cg.alpha;
+					var diff = Value;
+					return degree => cg.alpha = prev + diff * degree;
+				}
 			}
 
 			Debug.LogWarningFormat("PropKey `{0}` to `Relative` is not catched", Key);

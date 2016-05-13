@@ -48,8 +48,8 @@ namespace Barracuda.UISystem
 				var degree = elapsedTime / duration;
 				foreach (var tweener in tweeners) {
 					tweener.Invoke(degree);
-					yield return Streamee.UnitEmpty;
 				}
+				yield return Streamee.UnitEmpty;
 			}
 			foreach (var tweener in tweeners) {
 				tweener.Invoke(1);
