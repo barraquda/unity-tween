@@ -8,6 +8,8 @@ namespace Barracuda.UISystem
 	public abstract class TweenBase : MonoBehaviour
 	{
 		public abstract IStreamee<Unit> Streamee { get; }
+
+		public abstract void Revert();
 	}
 	
 }

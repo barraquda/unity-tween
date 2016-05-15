@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UniLinq;
 
 namespace Barracuda.UISystem
 {
@@ -44,35 +45,50 @@ namespace Barracuda.UISystem
 			set { loop = value; }
 		}
 
+		bool hasDefaultValue;
+		float defaultValue;
+
 		public override IStreamee<Unit> Streamee
 		{
 			get {
 				var ui = GetComponent<Graphic>();
-				TweenProperty property = null;
-				switch (propertyType) {
-				case TweenPropertyType.Absolute:
-					property = new Absolute(target, value);
-					break;
-				case TweenPropertyType.Relative:
-					property = new Relative(target, value);
-					break;
-				case TweenPropertyType.Multiple:
-					property = new Multiple(target, value);
-					break;
-				}
-				var streamee = gameObject.Animate(property, duration, Barracuda.Easing.FromAnimationCurve(easing));
-				if (loop) {
-					return AnimateForever(streamee).ToStreamee();
-				}
+				var property = GetProperty(value);
+
+				var streamee = GetTweenEnumerable(property).ToStreamee();
 				return streamee;
 			}
 		}
 
-		IEnumerable<IStreamee<Unit>> AnimateForever(IStreamee<Unit> tween)
+		IEnumerable<IStreamee<Unit>> GetTweenEnumerable(TweenProperty property)
 		{
-			while (true) {
-				yield return tween;
+			if (!hasDefaultValue) {
+				hasDefaultValue = true;
+				defaultValue = property.GetCurrentValue(gameObject);
+				Debug.Log(property.Key + " default : " + defaultValue);
 			}
+			do {
+				yield return gameObject.Animate(property, duration, Barracuda.Easing.FromAnimationCurve(easing));
+			} while (loop);
+		}
+
+		public override void Revert()
+		{
+			if (hasDefaultValue) {
+				gameObject.Fix(new Absolute(target, defaultValue));
+			}
+		}
+
+		TweenProperty GetProperty(float value)
+		{
+			switch (propertyType) {
+			case TweenPropertyType.Absolute:
+				return new Absolute(target, value);
+			case TweenPropertyType.Relative:
+				return new Relative(target, value);
+			case TweenPropertyType.Multiple:
+				return new Multiple(target, value);
+			}
+			return null;
 		}
 
 		public enum TweenPropertyType

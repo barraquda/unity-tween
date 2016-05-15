@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Barracuda.UISystem
 {
-	public class CompositeTween : TweenBase
+	public class CompositeTween : TweenBase, ICollectionTween
 	{
 		[SerializeField] TweenBase[] tweens;
 		public TweenBase[] Tweens {
@@ -15,6 +15,15 @@ namespace Barracuda.UISystem
 		public override IStreamee<Unit> Streamee {
 			get {
 				return Merge().ToStreamee();
+			}
+		}
+
+		public override void Revert()
+		{
+			foreach (var tween in tweens) {
+				if (tween != null) {
+					tween.Revert();
+				}
 			}
 		}
 
@@ -31,6 +40,10 @@ namespace Barracuda.UISystem
 					allFinish &= !enumerator.MoveNext();
 				}
 				yield return Barracuda.Streamee.UnitEmpty;
+			}
+
+			foreach (var e in tweenEnumerators) {
+				e.Dispose();
 			}
 		}
 	}

@@ -31,6 +31,14 @@ namespace Barracuda.UISystem
 						rectTransform.sizeDelta = new Vector2(prevWidth + diff * degree, rectTransform.sizeDelta.y);
 					};
 				}
+			case TweenKey.Height:
+				{
+					var prevHeight = rectTransform.sizeDelta.y;
+					var diff = Value - prevHeight;
+					return degree => {
+						rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, prevHeight + diff * degree);
+					};
+				}
 			case TweenKey.X:
 				{
 					var prevX = rectTransform.anchoredPosition.x;
