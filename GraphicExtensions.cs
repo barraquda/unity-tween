@@ -45,14 +45,15 @@ namespace Barracuda.UISystem
 
 			float elapsedTime = 0;
 			while ((elapsedTime += Time.deltaTime) < duration) {
-				var degree = elapsedTime / duration;
+				var degree = easingMode.Invoke(elapsedTime, elapsedTime, 0, 1, duration);
 				foreach (var tweener in tweeners) {
 					tweener.Invoke(degree);
 				}
 				yield return Streamee.UnitEmpty;
 			}
+			var lastDegree = easingMode.Invoke(duration, duration, 0, 1, duration);
 			foreach (var tweener in tweeners) {
-				tweener.Invoke(1);
+				tweener.Invoke(lastDegree);
 				yield return Streamee.UnitEmpty;
 			}
 		}

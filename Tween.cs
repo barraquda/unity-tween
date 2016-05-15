@@ -1,44 +1,50 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Barracuda.UISystem
 {
-	[System.Serializable]
 	[RequireComponent(typeof(Graphic))]
-	public class Tween : MonoBehaviour
+	public class Tween : TweenBase
 	{
-		[SerializeField] private TweenKey target;
+		[SerializeField] TweenKey target;
 		public TweenKey Target {
 			get { return target; }
 			set { target = value; }
 		}
 
-		[SerializeField] private TweenPropertyType propertyType;
+		[SerializeField] TweenPropertyType propertyType;
 		public TweenPropertyType PropertyType {
 			get { return propertyType; }
 			set { propertyType = value; }
 		}
 
-		[SerializeField] private float value;
+		[SerializeField] float value;
 		public float Value {
 			get { return value; }
 			set { this.value = value; }
 		}
 
-		[SerializeField] private AnimationCurve easing;
+		[SerializeField] AnimationCurve easing;
 		public AnimationCurve Easing {
 			get { return easing; }
 			set { easing = value; }
 		}
 
-		[SerializeField] private float duration;
+		[SerializeField] float duration;
 		public float Duration {
 			get { return duration; }
 			set { duration = value; }
 		}
 
-		public IStreamee<Unit> Streamee
+		[SerializeField] bool loop;
+		public bool Loop {
+			get { return loop; }
+			set { loop = value; }
+		}
+
+		public override IStreamee<Unit> Streamee
 		{
 			get {
 				var ui = GetComponent<Graphic>();
@@ -54,18 +60,19 @@ namespace Barracuda.UISystem
 					property = new Multiple(target, value);
 					break;
 				}
-				return null;
+				var streamee = gameObject.Animate(property, duration, Barracuda.Easing.FromAnimationCurve(easing));
+				if (loop) {
+					return AnimateForever(streamee).ToStreamee();
+				}
+				return streamee;
 			}
 		}
 
-		void Start()
+		IEnumerable<IStreamee<Unit>> AnimateForever(IStreamee<Unit> tween)
 		{
-		
-		}
-		
-		void Update()
-		{
-		
+			while (true) {
+				yield return tween;
+			}
 		}
 
 		public enum TweenPropertyType

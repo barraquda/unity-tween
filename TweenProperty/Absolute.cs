@@ -97,9 +97,7 @@ namespace Barracuda.UISystem
 				{
 					var prevScale = rectTransform.localScale;
 					var diffScale = new Vector3(1, 1, 1) * Value - prevScale;
-					return degree => {
-						rectTransform.localScale = prevScale + diffScale * degree;
-					};
+					return degree => rectTransform.localScale = prevScale + diffScale * degree;
 				}
 			case TweenKey.ScaleX:
 				{
@@ -132,7 +130,7 @@ namespace Barracuda.UISystem
 					var ui = gameObject.GetComponent<Graphic>();
 					var prevOpacity = ui.color.a;
 					var diff = Value - prevOpacity;
-					return degree => ui.color = new Color(ui.color.r, ui.color.g, ui.color.b, diff * degree);
+					return degree =>  ui.color = new Color(ui.color.r, ui.color.g, ui.color.b, prevOpacity + diff * degree);
 				}
 			case TweenKey.CanvasGroupAlpha:
 				{
