@@ -39,16 +39,10 @@ namespace Barracuda.UISystem
 			set { duration = value; }
 		}
 
-		[SerializeField] bool loop;
-		public bool Loop {
-			get { return loop; }
-			set { loop = value; }
-		}
-
 		bool hasDefaultValue;
 		float defaultValue;
 
-		public override IStreamee<Unit> Streamee
+		protected override IStreamee<Unit> TweenStreamee
 		{
 			get {
 				var ui = GetComponent<Graphic>();
@@ -64,11 +58,8 @@ namespace Barracuda.UISystem
 			if (!hasDefaultValue) {
 				hasDefaultValue = true;
 				defaultValue = property.GetCurrentValue(gameObject);
-				Debug.Log(property.Key + " default : " + defaultValue);
 			}
-			do {
-				yield return gameObject.Animate(property, duration, Barracuda.Easing.FromAnimationCurve(easing));
-			} while (loop);
+			yield return gameObject.Animate(property, duration, Barracuda.Easing.FromAnimationCurve(easing));
 		}
 
 		public override void Revert()

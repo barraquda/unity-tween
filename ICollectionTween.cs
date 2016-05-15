@@ -7,6 +7,7 @@ namespace Barracuda.UISystem
 	public interface ICollectionTween
 	{
 		TweenBase[] Tweens { get; }
+		bool Loop { get; set; }
 	}
 	
 }

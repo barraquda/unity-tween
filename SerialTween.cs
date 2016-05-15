@@ -12,7 +12,7 @@ namespace Barracuda.UISystem
 			set { tweens = value; }
 		}
 
-		public override IStreamee<Unit> Streamee {
+		protected override IStreamee<Unit> TweenStreamee {
 			get {
 				return Concat().ToStreamee();
 			}
@@ -29,8 +29,9 @@ namespace Barracuda.UISystem
 
 		IEnumerable<IStreamee<Unit>> Concat()
 		{
+			var i = 0;
 			foreach (var tween in tweens) {
-				using (var enumerator = tween.Streamee.GetEnumerator()) {
+				using (var enumerator = tween.GetTweenStreamee().GetEnumerator()) {
 					while (enumerator.MoveNext()) {
 						yield return enumerator.Current;
 					}

@@ -6,13 +6,14 @@ namespace Barracuda.UISystem
 	public class WaitTween : TweenBase
 	{
 		[SerializeField] float duration;
+		public float Duration { get { return duration; } }
 
 		public override void Revert()
 		{
 			/* Nothing to do */
 		}
 
-		public override IStreamee<Unit> Streamee {
+		protected override IStreamee<Unit> TweenStreamee {
 			get {
 				return Barracuda.Streamee.Wait(TimeSpan.FromSeconds(duration));
 			}

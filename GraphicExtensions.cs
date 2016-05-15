@@ -49,7 +49,7 @@ namespace Barracuda.UISystem
 				foreach (var tweener in tweeners) {
 					tweener.Invoke(degree);
 				}
-				yield return Streamee.UnitEmpty;
+				yield return Streamee.None<Unit>();
 			}
 			var lastDegree = easingMode.Invoke(duration, duration, 0, 1, duration);
 			foreach (var tweener in tweeners) {
