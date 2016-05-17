@@ -6,15 +6,13 @@ namespace Barracuda.UISystem
 {
 	public class CompositeTween : CollectionTweenBase
 	{
-		protected override IStreamee<Unit> TweenStreamee {
-			get {
-				return Merge().ToStreamee();
-			}
+		protected override IEnumerable<Unit> TweenStreamee {
+			get { return Merge(); }
 		}
 
-		IEnumerable<IStreamee<Unit>> Merge()
+		IEnumerable<Unit> Merge()
 		{
-			var tweenEnumerators = new List<IEnumerator<IStreamee<Unit>>>();
+			var tweenEnumerators = new List<IEnumerator<Unit>>();
 			foreach (var tween in Tweens) {
 				tweenEnumerators.Add(tween.GetTweenStreamee().GetEnumerator());
 			}
@@ -25,10 +23,10 @@ namespace Barracuda.UISystem
 					allFinish &= !enumerator.MoveNext();
 				}
 				if (allFinish) {
-					yield return Barracuda.Streamee.UnitEmpty;
+					yield return Unit.Default;
 					break;
 				} else {
-					yield return Barracuda.Streamee.None<Unit>();
+					yield return null;
 				}
 			}
 

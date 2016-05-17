@@ -11,13 +11,11 @@ namespace Barracuda.UISystem
 			set { interval = value; }
 		}
 
-		protected override IStreamee<Unit> TweenStreamee {
-			get {
-				return Subsequent().ToStreamee();
-			}
+		protected override IEnumerable<Unit> TweenStreamee {
+			get { return Subsequent(); }
 		}
 
-		IEnumerable<IStreamee<Unit>> Subsequent()
+		IEnumerable<Unit> Subsequent()
 		{
 			var offsets = new List<float>();
 			var sum = 0.0f;
@@ -27,7 +25,7 @@ namespace Barracuda.UISystem
 				sum += interval;
 			}
 
-			var tweenEnumerators = new List<IEnumerator<IStreamee<Unit>>>();
+			var tweenEnumerators = new List<IEnumerator<Unit>>();
 			foreach (var tween in Tweens) {
 				tweenEnumerators.Add(tween.GetTweenStreamee().GetEnumerator());
 			}
@@ -44,10 +42,10 @@ namespace Barracuda.UISystem
 					}
 				}
 				if (allFinish) {
-					yield return Barracuda.Streamee.UnitEmpty;
+					yield return Unit.Default;
 					break;
 				} else {
-					yield return Barracuda.Streamee.None<Unit>();
+					yield return null;
 				}
 			}
 		}

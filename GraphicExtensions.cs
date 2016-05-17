@@ -19,7 +19,7 @@ namespace Barracuda.UISystem
 			}
 		}
 
-		public static IStreamee<Unit> Animate(this GameObject ui, TweenProperty[] properties, float duration, EasingMode easingMode = null)
+		public static IEnumerable<Unit> Animate(this GameObject ui, TweenProperty[] properties, float duration, EasingMode easingMode = null)
 		{
 			if (ui == null) {
 				throw new NullReferenceException("Null is invalid");
@@ -27,15 +27,15 @@ namespace Barracuda.UISystem
 			if (easingMode == null) {
 				easingMode = Easing.EaseOut;
 			}
-			return Streamee.Branch(AnimateEnumerable(ui, properties, duration, easingMode));
+			return AnimateEnumerable(ui, properties, duration, easingMode);
 		}
 
-		public static IStreamee<Unit> Animate(this GameObject ui, TweenProperty property, float duration, EasingMode easingMode = null)
+		public static IEnumerable<Unit> Animate(this GameObject ui, TweenProperty property, float duration, EasingMode easingMode = null)
 		{
 			return Animate(ui, new TweenProperty[] { property }, duration, easingMode);
 		}
 
-		private static IEnumerable<IStreamee<Unit>> AnimateEnumerable(GameObject ui, TweenProperty[] properties, float duration, EasingMode easingMode)
+		private static IEnumerable<Unit> AnimateEnumerable(GameObject ui, TweenProperty[] properties, float duration, EasingMode easingMode)
 		{
 			var tweeners = new Action<float>[properties.Length];
 
@@ -49,12 +49,12 @@ namespace Barracuda.UISystem
 				foreach (var tweener in tweeners) {
 					tweener.Invoke(degree);
 				}
-				yield return Streamee.None<Unit>();
+				yield return null;
 			}
 			var lastDegree = easingMode.Invoke(duration, duration, 0, 1, duration);
 			foreach (var tweener in tweeners) {
 				tweener.Invoke(lastDegree);
-				yield return Streamee.UnitEmpty;
+				yield return Unit.Default;
 			}
 		}
 	}

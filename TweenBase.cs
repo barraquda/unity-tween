@@ -20,18 +20,14 @@ namespace Barracuda.UISystem
 			set { loop = value; }
 		}
 
-		protected abstract IStreamee<Unit> TweenStreamee { get; }
+		protected abstract IEnumerable<Unit> TweenStreamee { get; }
 
-		public IStreamee<Unit> GetTweenStreamee()
+		public IEnumerable<Unit> GetTweenStreamee()
 		{
-			if (loop) {
-				return GetForeverEnumerable().ToStreamee();
-			} else {
-				return TweenStreamee;
-			}
+			return loop ? GetForeverEnumerable() : TweenStreamee;
 		}
 
-		private IEnumerable<IStreamee<Unit>> GetForeverEnumerable()
+		private IEnumerable<Unit> GetForeverEnumerable()
 		{
 			while (true) {
 				using (var enumerator = TweenStreamee.GetEnumerator()) {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace Barracuda.UISystem
 {
@@ -13,9 +14,12 @@ namespace Barracuda.UISystem
 			/* Nothing to do */
 		}
 
-		protected override IStreamee<Unit> TweenStreamee {
+		protected override IEnumerable<Unit> TweenStreamee {
 			get {
-				return Barracuda.Streamee.Wait(TimeSpan.FromSeconds(duration));
+				// TODO 依存関係
+				foreach (var _ in EnumerableAction.Await(duration)) {
+					yield return Unit.Default;
+				}
 			}
 		}
 	}

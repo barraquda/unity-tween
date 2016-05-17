@@ -42,18 +42,18 @@ namespace Barracuda.UISystem
 		bool hasDefaultValue;
 		float defaultValue;
 
-		protected override IStreamee<Unit> TweenStreamee
+		protected override IEnumerable<Unit> TweenStreamee
 		{
 			get {
 				var ui = GetComponent<Graphic>();
 				var property = GetProperty(value);
 
-				var streamee = GetTweenEnumerable(property).ToStreamee();
+				var streamee = GetTweenEnumerable(property);
 				return streamee;
 			}
 		}
 
-		IEnumerable<IStreamee<Unit>> GetTweenEnumerable(TweenProperty property)
+		IEnumerable<Unit> GetTweenEnumerable(TweenProperty property)
 		{
 			if (!hasDefaultValue) {
 				hasDefaultValue = true;
@@ -61,7 +61,9 @@ namespace Barracuda.UISystem
 			}
 			if (duration > 0) {
 				var easing = this.easing == null ? Barracuda.Easing.Linear : Barracuda.Easing.FromAnimationCurve(this.easing);
-				yield return gameObject.Animate(property, duration, easing);
+				foreach (var unit in gameObject.Animate(property, duration, easing)) {
+					yield return unit;
+				}
 			} else {
 				gameObject.Fix(property);
 			}

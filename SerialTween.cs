@@ -6,13 +6,11 @@ namespace Barracuda.UISystem
 {
 	public class SerialTween : CollectionTweenBase
 	{
-		protected override IStreamee<Unit> TweenStreamee {
-			get {
-				return Concat().ToStreamee();
-			}
+		protected override IEnumerable<Unit> TweenStreamee {
+			get { return Concat(); }
 		}
 
-		IEnumerable<IStreamee<Unit>> Concat()
+		IEnumerable<Unit> Concat()
 		{
 			var i = 0;
 			foreach (var tween in Tweens) {
