@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-using Barracuda.Internal;
 using Barracuda.UISystem;
 
 namespace Barracuda
