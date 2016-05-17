@@ -4,33 +4,18 @@ using System.Collections.Generic;
 
 namespace Barracuda.UISystem
 {
-	public class CompositeTween : TweenBase, ICollectionTween
+	public class CompositeTween : CollectionTweenBase
 	{
-		[SerializeField] TweenBase[] tweens;
-		public TweenBase[] Tweens {
-			get { return tweens; }
-			set { tweens = value; }
-		}
-
 		protected override IStreamee<Unit> TweenStreamee {
 			get {
 				return Merge().ToStreamee();
 			}
 		}
 
-		public override void Revert()
-		{
-			foreach (var tween in tweens) {
-				if (tween != null) {
-					tween.Revert();
-				}
-			}
-		}
-
 		IEnumerable<IStreamee<Unit>> Merge()
 		{
 			var tweenEnumerators = new List<IEnumerator<IStreamee<Unit>>>();
-			foreach (var tween in tweens) {
+			foreach (var tween in Tweens) {
 				tweenEnumerators.Add(tween.GetTweenStreamee().GetEnumerator());
 			}
 

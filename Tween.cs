@@ -59,7 +59,12 @@ namespace Barracuda.UISystem
 				hasDefaultValue = true;
 				defaultValue = property.GetCurrentValue(gameObject);
 			}
-			yield return gameObject.Animate(property, duration, Barracuda.Easing.FromAnimationCurve(easing));
+			if (duration > 0) {
+				var easing = this.easing == null ? Barracuda.Easing.Linear : Barracuda.Easing.FromAnimationCurve(this.easing);
+				yield return gameObject.Animate(property, duration, easing);
+			} else {
+				gameObject.Fix(property);
+			}
 		}
 
 		public override void Revert()

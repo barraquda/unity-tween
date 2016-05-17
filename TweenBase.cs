@@ -7,6 +7,12 @@ namespace Barracuda.UISystem
 {
 	public abstract class TweenBase : MonoBehaviour
 	{
+		[SerializeField] string description;
+		public string Description {
+			get { return description; }
+			set { description = value; }
+		}
+
 		[SerializeField] bool loop;
 
 		public bool Loop {
