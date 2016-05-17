@@ -48,14 +48,14 @@ namespace Barracuda.Editor
 				if (tween != null) {
 					EditorGUILayout.BeginHorizontal();
 					{
-						EditorGUILayout.CurveField(tween.Easing, GUILayout.Height(72));
+						tween.Easing = EditorGUILayout.CurveField(tween.Easing, GUILayout.Height(72));
 
 						EditorGUILayout.BeginVertical();
 						{
-							EditorGUILayout.EnumPopup("Target", tween.Target);
-							EditorGUILayout.EnumPopup("Type", tween.PropertyType);
-							EditorGUILayout.FloatField("Value", tween.Value);
-							EditorGUILayout.FloatField("Duration", tween.Duration);
+							tween.Target = (TweenKey)EditorGUILayout.EnumPopup("Target", tween.Target);
+							tween.PropertyType = (Tween.TweenPropertyType)EditorGUILayout.EnumPopup("Type", tween.PropertyType);
+							tween.Value = EditorGUILayout.FloatField("Value", tween.Value);
+							tween.Duration = EditorGUILayout.FloatField("Duration", tween.Duration);
 						}
 						EditorGUILayout.EndVertical();
 					}
@@ -63,21 +63,30 @@ namespace Barracuda.Editor
 				}
 				var waitTween = tweenBase as WaitTween;
 				if (waitTween != null) {
-					EditorGUILayout.FloatField("Wait for", waitTween.Duration);
+					waitTween.Duration = EditorGUILayout.FloatField("Wait for", waitTween.Duration);
 				}
 
 				var subsequentTween = tweenBase as SubsequentTween;
 				if (subsequentTween != null) {
-					EditorGUILayout.FloatField("Interval", subsequentTween.Interval);
+					subsequentTween.Interval = EditorGUILayout.FloatField("Interval", subsequentTween.Interval);
 				}
 
 				var collectionTween = tweenBase as CollectionTweenBase;
 				if (collectionTween != null) {
-					foreach (var t in collectionTween.Tweens) {
-						InspectTween(t);
+					if (collectionTween.Tweens == null || collectionTween.Tweens.Length == 0) {
+						EditorGUILayout.HelpBox("No Tween is registered!", MessageType.Warning);
+					} else {
+						foreach (var t in collectionTween.Tweens) {
+							if (t != null) {
+								InspectTween(t);
+							} else {
+								EditorGUILayout.HelpBox("Null Element", MessageType.Error);
+							}
+						}
 					}
 				}
 			}
+
 			EditorGUILayout.EndVertical();
 		}
 

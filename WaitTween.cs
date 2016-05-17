@@ -7,7 +7,10 @@ namespace Barracuda.UISystem
 	public class WaitTween : TweenBase
 	{
 		[SerializeField] float duration;
-		public float Duration { get { return duration; } }
+		public float Duration {
+			get { return duration; }
+			set { duration = value; }
+		}
 
 		public override void Revert()
 		{

@@ -10,10 +10,18 @@ namespace Barracuda
 {
 	public class Tweener : MonoBehaviour, IDisposable
 	{
+		[SerializeField] bool runWhenStart;
+		[SerializeField] TweenBase tween;
+
 		bool stop;
 		public IEnumerator<Unit> Streamer { get; set; }
 
-		[SerializeField] TweenBase tween;
+		void Start()
+		{
+			if (runWhenStart) {
+				Begin();
+			}
+		}
 
 		void Update()
 		{
@@ -37,6 +45,11 @@ namespace Barracuda
 				Streamer.Dispose();
 			}
 			Streamer = tween.GetTweenStreamee().GetEnumerator();
+		}
+
+		public IEnumerable<Unit> GetEnumerable()
+		{
+			return tween.GetTweenStreamee();
 		}
 
 		public void Dispose()

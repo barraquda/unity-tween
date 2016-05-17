@@ -6,9 +6,10 @@ using UniLinq;
 
 namespace Barracuda.UISystem
 {
-	[RequireComponent(typeof(Graphic))]
 	public class Tween : TweenBase
 	{
+		[SerializeField] GameObject targetObject;
+
 		[SerializeField] TweenKey target;
 		public TweenKey Target {
 			get { return target; }
@@ -45,7 +46,6 @@ namespace Barracuda.UISystem
 		protected override IEnumerable<Unit> TweenStreamee
 		{
 			get {
-				var ui = GetComponent<Graphic>();
 				var property = GetProperty(value);
 
 				var streamee = GetTweenEnumerable(property);
@@ -55,6 +55,7 @@ namespace Barracuda.UISystem
 
 		IEnumerable<Unit> GetTweenEnumerable(TweenProperty property)
 		{
+			var gameObject = this.targetObject == null ? this.gameObject : this.targetObject;
 			if (!hasDefaultValue) {
 				hasDefaultValue = true;
 				defaultValue = property.GetCurrentValue(gameObject);
@@ -71,6 +72,7 @@ namespace Barracuda.UISystem
 
 		public override void Revert()
 		{
+			var gameObject = this.targetObject == null ? this.gameObject : this.targetObject;
 			if (hasDefaultValue) {
 				gameObject.Fix(new Absolute(target, defaultValue));
 			}
