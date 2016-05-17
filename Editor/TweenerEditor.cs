@@ -9,6 +9,8 @@ namespace Barracuda.Editor
 	[CustomEditor(typeof(Tweener))]
 	public class MonoStreamerEditor : UnityEditor.Editor
 	{
+		Dictionary<TweenBase, bool> foldouts = new Dictionary<TweenBase, bool>();
+
 		public override void OnInspectorGUI()
 		{
 			var serializedTween = serializedObject.FindProperty("tween");
@@ -39,55 +41,69 @@ namespace Barracuda.Editor
 
 		private void InspectTween(TweenBase tweenBase)
 		{
-			var defaultColor = GUI.backgroundColor;
-			GUI.backgroundColor = GetColorByTween(tweenBase);
-			EditorGUILayout.BeginVertical(GUI.skin.box);
-			GUI.backgroundColor = defaultColor;
-			{
-				var tween = tweenBase as Tween;
-				if (tween != null) {
-					EditorGUILayout.BeginHorizontal();
-					{
-						tween.Easing = EditorGUILayout.CurveField(tween.Easing, GUILayout.Height(72));
+			if (!foldouts.ContainsKey(tweenBase)) {
+				foldouts[tweenBase] = false;
+			}
 
-						EditorGUILayout.BeginVertical();
+			string message = tweenBase.Description;
+
+			if (string.IsNullOrEmpty(message)) {
+				message = tweenBase.GetType().Name;
+			}
+
+			foldouts[tweenBase] = EditorGUILayout.Foldout(foldouts[tweenBase], message);
+
+			if (foldouts[tweenBase]) {
+				var defaultColor = GUI.backgroundColor;
+				GUI.backgroundColor = GetColorByTween(tweenBase);
+				EditorGUILayout.BeginVertical(GUI.skin.box);
+				GUI.backgroundColor = defaultColor;
+				{
+					var tween = tweenBase as Tween;
+					if (tween != null) {
+						EditorGUILayout.BeginHorizontal();
 						{
-							tween.Target = (TweenKey)EditorGUILayout.EnumPopup("Target", tween.Target);
-							tween.PropertyType = (Tween.TweenPropertyType)EditorGUILayout.EnumPopup("Type", tween.PropertyType);
-							tween.Value = EditorGUILayout.FloatField("Value", tween.Value);
-							tween.Duration = EditorGUILayout.FloatField("Duration", tween.Duration);
+							tween.Easing = EditorGUILayout.CurveField(tween.Easing, GUILayout.Height(72));
+
+							EditorGUILayout.BeginVertical();
+							{
+								tween.Target = (TweenKey)EditorGUILayout.EnumPopup("Target", tween.Target);
+								tween.PropertyType = (Tween.TweenPropertyType)EditorGUILayout.EnumPopup("Type", tween.PropertyType);
+								tween.Value = EditorGUILayout.FloatField("Value", tween.Value);
+								tween.Duration = EditorGUILayout.FloatField("Duration", tween.Duration);
+							}
+							EditorGUILayout.EndVertical();
 						}
-						EditorGUILayout.EndVertical();
+						EditorGUILayout.EndHorizontal();
 					}
-					EditorGUILayout.EndHorizontal();
-				}
-				var waitTween = tweenBase as WaitTween;
-				if (waitTween != null) {
-					waitTween.Duration = EditorGUILayout.FloatField("Wait for", waitTween.Duration);
-				}
+					var waitTween = tweenBase as WaitTween;
+					if (waitTween != null) {
+						waitTween.Duration = EditorGUILayout.FloatField("Wait for", waitTween.Duration);
+					}
 
-				var subsequentTween = tweenBase as SubsequentTween;
-				if (subsequentTween != null) {
-					subsequentTween.Interval = EditorGUILayout.FloatField("Interval", subsequentTween.Interval);
-				}
+					var subsequentTween = tweenBase as SubsequentTween;
+					if (subsequentTween != null) {
+						subsequentTween.Interval = EditorGUILayout.FloatField("Interval", subsequentTween.Interval);
+					}
 
-				var collectionTween = tweenBase as CollectionTweenBase;
-				if (collectionTween != null) {
-					if (collectionTween.Tweens == null || collectionTween.Tweens.Length == 0) {
-						EditorGUILayout.HelpBox("No Tween is registered!", MessageType.Warning);
-					} else {
-						foreach (var t in collectionTween.Tweens) {
-							if (t != null) {
-								InspectTween(t);
-							} else {
-								EditorGUILayout.HelpBox("Null Element", MessageType.Error);
+					var collectionTween = tweenBase as CollectionTweenBase;
+					if (collectionTween != null) {
+						if (collectionTween.Tweens == null || collectionTween.Tweens.Length == 0) {
+							EditorGUILayout.HelpBox("No Tween is registered!", MessageType.Warning);
+						} else {
+							foreach (var t in collectionTween.Tweens) {
+								if (t != null) {
+									InspectTween(t);
+								} else {
+									EditorGUILayout.HelpBox("Null Element", MessageType.Error);
+								}
 							}
 						}
 					}
 				}
-			}
 
-			EditorGUILayout.EndVertical();
+				EditorGUILayout.EndVertical();
+			}
 		}
 
 		private Color GetColorByTween(TweenBase tween)
