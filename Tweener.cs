@@ -13,7 +13,7 @@ namespace Barracuda
 		bool stop;
 		public IEnumerator<Unit> Streamer { get; set; }
 
-		[SerializeField] TweenBase streamee;
+		[SerializeField] TweenBase tween;
 
 		void Update()
 		{
@@ -25,8 +25,8 @@ namespace Barracuda
 		public void Stop()
 		{
 			stop = true;
-			if (streamee != null) {
-				streamee.Revert();
+			if (tween != null) {
+				tween.Revert();
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace Barracuda
 			if (Streamer != null) {
 				Streamer.Dispose();
 			}
-			Streamer = streamee.GetTweenStreamee().GetEnumerator();
+			Streamer = tween.GetTweenStreamee().GetEnumerator();
 		}
 
 		public void Dispose()
